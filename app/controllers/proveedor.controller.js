@@ -1,6 +1,6 @@
 // importamos db los modelos en este caso si tenemos uno o mas, se puede referenciar db."nombreModelo".   
 const db = require("../models");
-const Cliente = db.clientes;
+const Proveedor = db.proveedors;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Client
@@ -14,7 +14,8 @@ exports.create = (req, res) => {
     }
 
     // Create a Client, definiendo una variable con la estructura del reques para luego solo ser enviada como parametro mas adelante. 
-    const cliente = {
+    const proveedor = {
+
         nombre: req.body.nombre,
         apellido: req.body.apellido,
         direccion: req.body.direccion, 
@@ -26,14 +27,14 @@ exports.create = (req, res) => {
     };
 
     // Save a new Client into the database
-    Cliente.create(cliente)
+    Proveedor.create(proveedor)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Client."
+                    err.message || "Some error occurred while creating the Proveedor."
             });
         });
 };
@@ -43,14 +44,14 @@ exports.findAll = (req, res) => {
     const nombre = req.query.nombre;
     var condition = nombre ? { nombre: { [Op.iLike]: `%${nombre}%` } } : null;
 
-    Cliente.findAll({ where: condition })
+    Proveedor.findAll({ where: condition })
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving clients."
+                    err.message || "Some error occurred while retrieving proveedor."
             });
         });
 };
@@ -59,13 +60,13 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Cliente.findByPk(id)
+    Proveedor.findByPk(id)
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving Cliente with id=" + id
+                message: "Error retrieving Proveedor with id=" + id
             });
         });
 };
@@ -74,23 +75,23 @@ exports.findOne = (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
 
-    Cliente.update(req.body, {
+    Proveedor.update(req.body, {
         where: { id: id }
     })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Cliente was updated successfully."
+                    message: "Proveedor was updated successfully."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Client with id=${id}. Maybe Client was not found or req.body is empty!`
+                    message: `Cannot update Proveedor with id=${id}. Maybe Proveedor was not found or req.body is empty!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Client with id=" + id
+                message: "Error updating Proveedor with id=" + id
             });
         });
 };
@@ -99,17 +100,17 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
     const id = req.params.id;
     // utilizamos el metodo destroy para eliminar el objeto mandamos la condicionante where id = parametro que recibimos 
-    Cliente.destroy({
+    Proveedor.destroy({
         where: { id: id }
     })
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Client was deleted successfully!"
+                    message: "Proveedor was deleted successfully!"
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Client with id=${id}. El cliente no fue encontado!`
+                    message: `Cannot delete Proveedor with id=${id}. El proveedor no fue encontado!`
                 });
             }
         })
@@ -122,31 +123,31 @@ exports.delete = (req, res) => {
 
 // Delete all Clients from the database.
 exports.deleteAll = (req, res) => {
-    Cliente.destroy({
+    Proveedor.destroy({
         where: {},
         truncate: false
     })
         .then(nums => {
-            res.send({ message: `${nums} Clients were deleted successfully!` });
+            res.send({ message: `${nums} Proveedor were deleted successfully!` });
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while removing all clients."
+                    err.message || "Some error occurred while removing all proveedor."
             });
         });
 };
 
 // find all active Client, basado en el atributo status vamos a buscar que solo los clientes activos
 exports.findAllStatus = (req, res) => {
-    Cliente.findAll({ where: { status: true } })
+    Proveedor.findAll({ where: { status: true } })
         .then(data => {
             res.send(data);
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving Client."
+                    err.message || "Some error occurred while retrieving Proveedor."
             });
         }); 
 };

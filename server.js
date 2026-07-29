@@ -19,6 +19,8 @@ app.get("/", (req, res) => {
 });
 
 require("./app/routes/cliente.routes")(app);
+require("./app/routes/proveedor.routes")(app);
+require("./app/routes/producto.routes")(app);
 
 // Sincronizar la BD y luego iniciar el servidor
 db.sequelize.sync()
